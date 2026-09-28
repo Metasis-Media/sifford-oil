@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sifford Oil Company website
 
-## Getting Started
+Marketing site for Sifford Oil Company, a family-owned fuel station, NAPA AutoCare service center, propane dealer and heating oil distributor at 6130 Hwy 152 E, Rockwell, NC (since 1955).
 
-First, run the development server:
+Built with Next.js 16 (App Router), React 19 and Tailwind CSS v4. Every page is statically prerendered. The request forms use a server action.
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| What | File |
+| --- | --- |
+| Phone, address, hours, links, fuel grades, reviews | `lib/site.ts` |
+| Colors and fonts (design tokens) | `app/globals.css`, `app/layout.tsx` |
+| Roadside sign and LED digits | `components/road-sign.tsx`, `components/seven-seg.tsx` |
+| Live "open now" status and hours table | `components/hours.tsx` |
+| Request forms and email sending | `components/request-form.tsx`, `app/actions.ts` |
+| Share image, favicon, sitemap, robots | `app/opengraph-image.tsx`, `app/icon.svg`, `app/sitemap.ts`, `app/robots.ts` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Business hours only need changing in `lib/site.ts`. The header status, hours tables, footer and structured data all read from it.
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Push the repo to GitHub and import it in Vercel (framework preset: Next.js, no build settings to change).
+2. Add the environment variables from `.env.example`:
+   - `NEXT_PUBLIC_SITE_URL`: the final domain, e.g. `https://siffordoil.com`
+   - `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`: so the forms can email the shop
+3. Add the custom domain under Project → Settings → Domains.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Until the email variables are set, production forms show "call us at (704) 279-2125" rather than silently dropping requests.
